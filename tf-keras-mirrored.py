@@ -15,6 +15,7 @@ datasets, info = tfds.load(name='mnist', with_info=True, as_supervised=True)
 mnist_train, mnist_test = datasets['train'], datasets['test']
 
 strategy = tf.distribute.MirroredStrategy()
+# strategy = tf.distribute.MirroredStrategy(devices)
 
 print('Number of devices: {}'.format(strategy.num_replicas_in_sync))
 
@@ -53,7 +54,7 @@ with strategy.scope():
 
 # Define the checkpoint directory to store the checkpoints
 
-checkpoint_dir = './training_checkpoints'
+checkpoint_dir = './logs/training_checkpoints'
 # Name of the checkpoint files
 checkpoint_prefix = os.path.join(checkpoint_dir, "ckpt_{epoch}")
 
@@ -90,7 +91,7 @@ eval_loss, eval_acc = model.evaluate(eval_dataset)
 
 print('Eval loss: {}, Eval Accuracy: {}'.format(eval_loss, eval_acc))
 
-path = 'saved_model/'
+path = './logs/saved_model/'
 
 model.save(path, save_format='tf')
 
